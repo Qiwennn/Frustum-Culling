@@ -4,40 +4,45 @@
 
 
 # What’s Implemented
+
 # 1) AABB generation (load time, once per mesh)
 
-- Where: `MeshCPU::ReadMesh()` and `MeshManager::getAsset()`.
+- Where: `MeshManager::getAsset()` in `MeshManager.cpp`, after the mesh is loaded.
 
 - What:
 
-  - Traverse the position buffer to find per-axis min/max and build a local-space AABB.
+  - Traverse the position buffer to find the minimum and maximum x, y, and z values, forming a local-space AABB.
 
   - Store both:
 
-    - `Vector3 m_AABBPoints[8]` (8 corners; easy world transform & testing).
+    - `Vector3 m_AABBPoints[8]`: the eight corners used for visibility testing.
 
-    - `Matrix4x4 m_AABB[4]` (four “corner + basis vectors” helpers for wire drawing).
+    - `Matrix4x4 m_AABB[4]`: corner-and-basis data used to draw the debug box.
 
-  - Enable culling per mesh: m_performBoundingVolumeCulling = true;
+  - Enable culling for the mesh with `m_performBoundingVolumeCulling = true`.
 
-# 2) Frustum plane construction (every frame)
+# 2) Frustum plane construction (every camera update)
 
 - Where: `CameraSceneNode::do_CALCULATE_TRANSFORMATIONS()`.
 
 - What:
 
-  - Build view & projection; extract 6 frustum planes (L/R/T/B/N/F) into `m_frustumPlanes[6]`.
+  - Build the camera’s view and projection matrices.
 
-  - Use a slightly smaller FOV (`verticalFov2`) to form the culling projection so meshes disappear earlier than the on-screen FOV—easy to see culling correctness.
+  - Extract six frustum planes—left, right, top, bottom, near, and far—into `m_frustumPlanes[6]`.
+
+  - Use a slightly narrower FOV (`verticalFov2`) for the culling frustum in the demo. This makes objects disappear near the screen edge so the culling transition is visible.
 
 # 3) Runtime culling & debug rendering
 
-- Where: `SingleHandler_Draw::do_GATHER_DRAWCALLS()` in `SH_DRAW.cpp`.
+- Where: `SingleHandler_DRAW::do_GATHER_DRAWCALLS()` in `SH_DRAW.cpp`.
 
 - What:
 
-  - For each `MeshInstance`, get its parent `SceneNode` world transform.
+  - For each `MeshInstance`, obtain its parent `SceneNode` world transform.
 
-  - Transform `m_AABBPoints[8]` to world space; test against the 6 planes; set `m_culledOut`; update `m_numVisibleInstances`.
+  - Transform the eight AABB corners into world space and test them against the six frustum planes.
 
-  - For visible instances, call `DebugRenderer::createAABBLineMesh(...)` to draw a green AABB.
+  - Set `m_culledOut`, update `m_numVisibleInstances`, and skip culled instances in the drawing path.
+
+  - Draw a green AABB for visible instances with `DebugRenderer::createAABBLineMesh(...)`.
