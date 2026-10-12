@@ -13,7 +13,7 @@
 
   - Traverse the position buffer to find the minimum and maximum x, y, and z values, forming a local-space AABB.
 
-  - Store both:
+  - Store:
 
     - `Vector3 m_AABBPoints[8]`: the eight corners used for visibility testing.
 
