@@ -45,4 +45,3 @@
 
   - Set `m_culledOut`, update `m_numVisibleInstances`, and skip culled instances in the drawing path.
 
-  - Draw a green AABB for visible instances with `DebugRenderer::createAABBLineMesh(...)`.
