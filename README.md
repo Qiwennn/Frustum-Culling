@@ -17,8 +17,6 @@
 
     - `Vector3 m_AABBPoints[8]`: the eight corners used for visibility testing.
 
-    - `Matrix4x4 m_AABB[4]`: corner-and-basis data used to draw the debug box.
-
   - Enable culling for the mesh with `m_performBoundingVolumeCulling = true`.
 
 # 2) Frustum plane construction (every camera update)
