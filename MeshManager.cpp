@@ -100,7 +100,7 @@ PE::Handle MeshManager::getAsset(const char *asset, const char *package, int &th
 			else if (y > maxY) maxY = y;
 
 			if (z < minZ) minZ = z;
-			else if (z > maxZ) maxZ = z;
+		    if (z > maxZ) maxZ = z;
 		}
 
 		// build AABB box by 8 points
