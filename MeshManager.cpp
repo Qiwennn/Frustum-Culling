@@ -83,9 +83,12 @@ PE::Handle MeshManager::getAsset(const char *asset, const char *package, int &th
 		PositionBufferCPU *pVB = pMesh->m_hPositionBufferCPU.getObject<PositionBufferCPU>();
 		const int numVerts = pVB->m_values.m_size / 3;
 		
-		float minX = INT_MAX, maxX = INT_MIN;
-		float minY = INT_MAX, maxY = INT_MIN;
-		float minZ = INT_MAX, maxZ = INT_MIN;
+		float minX = std::numeric_limits<float>::max();
+		float maxX = std::numeric_limits<float>::lowest();
+		float minY = std::numeric_limits<float>::max();
+		float maxY = std::numeric_limits<float>::lowest();
+		float minZ = std::numeric_limits<float>::max();
+		float maxZ = std::numeric_limits<float>::lowest();
 
 		for (int i = 0; i < numVerts; ++i)
 		{
@@ -94,10 +97,10 @@ PE::Handle MeshManager::getAsset(const char *asset, const char *package, int &th
 			float z = pVB->m_values[i * 3 + 2];
 			
 			if (x < minX) minX = x;
-			else if (x > maxX) maxX = x;
+		    if (x > maxX) maxX = x;
 
 			if (y < minY) minY = y;
-			else if (y > maxY) maxY = y;
+			if (y > maxY) maxY = y;
 
 			if (z < minZ) minZ = z;
 		    if (z > maxZ) maxZ = z;
