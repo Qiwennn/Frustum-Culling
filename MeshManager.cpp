@@ -103,27 +103,6 @@ PE::Handle MeshManager::getAsset(const char *asset, const char *package, int &th
 			else if (z > maxZ) maxZ = z;
 		}
 
-		// build AABB box by 4 matrices from 4 vertices
-		pMesh->m_AABB[0].setPos(Vector3(minX, minY, minZ));
-		pMesh->m_AABB[0].setU(Vector3(maxX - minX, 0, 0));
-		pMesh->m_AABB[0].setV(Vector3(0, maxY - minY, 0));
-		pMesh->m_AABB[0].setN(Vector3(0, 0, maxZ - minZ));
-
-		pMesh->m_AABB[1].setPos(Vector3(maxX, minY, maxZ));
-		pMesh->m_AABB[1].setU(Vector3(minX - maxX, 0, 0));
-		pMesh->m_AABB[1].setV(Vector3(0, maxY - minY, 0));
-		pMesh->m_AABB[1].setN(Vector3(0, 0, minZ - maxZ));
-
-		pMesh->m_AABB[2].setPos(Vector3(maxX, maxY, minZ));
-		pMesh->m_AABB[2].setU(Vector3(minX - maxX, 0, 0));
-		pMesh->m_AABB[2].setV(Vector3(0, minY - maxY, 0));
-		pMesh->m_AABB[2].setN(Vector3(0, 0, maxZ - minZ));
-
-		pMesh->m_AABB[3].setPos(Vector3(minX, maxY, maxZ));
-		pMesh->m_AABB[3].setU(Vector3(maxX - minX, 0, 0));
-		pMesh->m_AABB[3].setV(Vector3(0, minY - maxY, 0));
-		pMesh->m_AABB[3].setN(Vector3(0, 0, minZ - maxZ));
-
 		// build AABB box by 8 points
 		// lower vertices
 		pMesh->m_AABBPoints[0] = Vector3(minX, minY, minZ);
